@@ -1,0 +1,52 @@
+name: Publish Release
+
+on:
+  #trigger manually
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'v0.0.0 Test scenario tags'
+        required: false
+        type: boolean
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: go build
+        run: |
+          go get
+          go build -o wfRivenAssistant.exe
+      - name: prepare release files
+        run: |
+          mkdir release-$env:GITHUB_REF_NAME
+          copy config-example.json release-$env:GITHUB_REF_NAME/config.json
+          copy CHANGELOG.md release-$env:GITHUB_REF_NAME/
+          copy README.md release-$env:GITHUB_REF_NAME/
+          copy LICENSE release-$env:GITHUB_REF_NAME/
+          copy wfRivenAssistant.exe release-$env:GITHUB_REF_NAME/wfRivenAssistant.exe
+          Compress-Archive -Path release-$env:GITHUB_REF_NAME/* -Destination release-$env:GITHUB_REF_NAME.zip
+      - name: Release
+        env:
+          # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: CHANGELOG.md
+#          body_path: ${{ github.workspace }}-CHANGELOG.txt
+          files: |
+            LICENSE
+            README.md
+            CHANGELOG.md
+            release-*.zip
