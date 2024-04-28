@@ -97,21 +97,20 @@ type Item struct {
 	ItemName string `json:"item_name"`
 }
 
-func (wfm WfMarket) requestAuctionPrice(itemName string, rivenName string) (RivenPrices, error) {
+func (wfm WfMarket) requestAuctionPrice(itemName string, config Configuration) (RivenPrices, error) {
 
 	itemUrl, err := wfm.getItemUrlByName(itemName)
 	if err != nil {
 		return RivenPrices{}, err
 	}
-	//fmt.Println("ItemUrl=" + itemUrl)
 
 	client := &http.Client{}
 	// sorting by price to get cheap ones first
 	// max number of results seems to be 500
 	url := fmt.Sprintf("https://api.warframe.market/v1/auctions/search?type=riven&sort_by=price_asc&buyout_policy=direct&weapon_url_name=%s", itemUrl)
 	req, err := http.NewRequest("GET", url, nil)
-	//move Platform to config
-	req.Header.Set("Platform", "pc")
+
+	req.Header.Set("Platform", config.Setup.Platform)
 	req.Header.Set("accept", "application/json")
 	if err != nil {
 		fmt.Print(err.Error())
@@ -129,7 +128,6 @@ func (wfm WfMarket) requestAuctionPrice(itemName string, rivenName string) (Rive
 	if err != nil {
 		log.Fatal(err)
 	}
-	//fmt.Println(string(responseData))
 
 	var auctionResponse AuctionsResponse
 	err2 := json.Unmarshal([]byte(string(responseData)), &auctionResponse)

@@ -6,4 +6,8 @@ type Riven struct {
 }
 type Configuration struct {
 	Rivens []Riven `json:"rivens"`
+	Setup  struct {
+		Platform                              string `json:"platform"`
+		LowerSectionAverageHighlightThreshold int    `json:"lowerSectionAverageHighlightThreshold"`
+	} `json:"setup"`
 }

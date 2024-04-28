@@ -33,7 +33,7 @@ func CreateAndShowTable(config Configuration) {
 		riven := config.Rivens[idx]
 		weaponName := riven.Weapon
 		log.Printf("Collecting data for '%s' (%d/%d)...", weaponName, idx, len(config.Rivens))
-		price, err := market.requestAuctionPrice(weaponName, riven.Attributes)
+		price, err := market.requestAuctionPrice(weaponName, config)
 		log.Printf("...done\n")
 		if err != nil {
 			panic(err)
@@ -46,6 +46,7 @@ func CreateAndShowTable(config Configuration) {
 		resultData = append(resultData, singleData)
 	}
 	data := &TableData{
+		config:       config,
 		data:         resultData,
 		sortAsc:      true,
 		sortedColumn: 0,
@@ -231,7 +232,7 @@ func (d *TableData) GetCell(row, column int) *tview.TableCell {
 			align = tview.AlignCenter
 		} else {
 			value = strconv.Itoa(d.data[row-1].price.LowerSection_Average)
-			if d.data[row-1].price.LowerSection_Average < 40 {
+			if d.data[row-1].price.LowerSection_Average < d.config.Setup.LowerSectionAverageHighlightThreshold {
 				cellColor = tcell.ColorRed
 			}
 		}
@@ -247,6 +248,7 @@ func (d *TableData) GetCell(row, column int) *tview.TableCell {
 }
 
 type TableData struct {
+	config Configuration
 	tview.TableContentReadOnly
 	sortedColumn int
 	sortAsc      bool
