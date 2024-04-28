@@ -20,4 +20,4 @@ jobs:
       - name: go build
         run: |
           go get
-          go build -o ${{ matrix.build.artifact }}
+          go build -o wfRivenAssistant.exe
