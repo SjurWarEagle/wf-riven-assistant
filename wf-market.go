@@ -25,15 +25,15 @@ func NewWfMarket() *WfMarket {
 }
 
 type RivenPrices struct {
-	LowerSection_Cnt     int
-	LowerSection_Average int
-	LowerSection_Min     int
-	LowerSection_Max     int
-	All_Cnt              int
-	all_Sum              int
-	All_Average          int
-	All_Min              int
-	All_Max              int
+	LowersectionCnt     int
+	LowersectionAverage int
+	LowersectionMin     int
+	LowersectionMax     int
+	AllCnt              int
+	allSum              int
+	AllAverage          int
+	AllMin              int
+	AllMax              int
 }
 
 type AuctionsResponse struct {
@@ -142,10 +142,10 @@ func (wfm WfMarket) requestAuctionPrice(itemName string, config Configuration) (
 	auctionItemsLower := extractLowerSection(relevantActions, 10)
 	rivePricesLower := wfm.consolidatePrices(auctionItemsLower)
 
-	rivePrices.LowerSection_Cnt = rivePricesLower.All_Cnt
-	rivePrices.LowerSection_Min = rivePricesLower.All_Min
-	rivePrices.LowerSection_Max = rivePricesLower.All_Max
-	rivePrices.LowerSection_Average = rivePricesLower.All_Average
+	rivePrices.LowersectionCnt = rivePricesLower.AllCnt
+	rivePrices.LowersectionMin = rivePricesLower.AllMin
+	rivePrices.LowersectionMax = rivePricesLower.AllMax
+	rivePrices.LowersectionAverage = rivePricesLower.AllAverage
 
 	return rivePrices, nil
 }
@@ -193,7 +193,7 @@ func extractLowerSection(auctions []Auction, minCnt int) []Auction {
 
 func (wfm WfMarket) consolidatePrices(auctions []Auction) RivenPrices {
 	rivePrices := RivenPrices{}
-	rivePrices.All_Min = 9999
+	rivePrices.AllMin = 9999
 
 	for idx := range auctions {
 		auction := auctions[idx]
@@ -203,19 +203,19 @@ func (wfm WfMarket) consolidatePrices(auctions []Auction) RivenPrices {
 		}
 
 		if auction.StartingPrice > 0 {
-			rivePrices.All_Cnt++
-			rivePrices.all_Sum += auction.StartingPrice
+			rivePrices.AllCnt++
+			rivePrices.allSum += auction.StartingPrice
 
-			if rivePrices.All_Min > auction.StartingPrice {
-				rivePrices.All_Min = auction.StartingPrice
+			if rivePrices.AllMin > auction.StartingPrice {
+				rivePrices.AllMin = auction.StartingPrice
 			}
-			if rivePrices.All_Max < auction.StartingPrice {
-				rivePrices.All_Max = auction.StartingPrice
+			if rivePrices.AllMax < auction.StartingPrice {
+				rivePrices.AllMax = auction.StartingPrice
 			}
 		}
 	}
-	if rivePrices.All_Cnt > 0 {
-		rivePrices.All_Average = rivePrices.all_Sum / rivePrices.All_Cnt
+	if rivePrices.AllCnt > 0 {
+		rivePrices.AllAverage = rivePrices.allSum / rivePrices.AllCnt
 	}
 
 	return rivePrices

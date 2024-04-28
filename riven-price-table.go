@@ -101,44 +101,44 @@ func SortData(row int, column int, data *TableData) {
 			return dataToSort[i].name > dataToSort[j].name
 		} else if column == ColumnAllAverage {
 			if data.sortAsc {
-				return dataToSort[i].price.All_Average < dataToSort[j].price.All_Average
+				return dataToSort[i].price.AllAverage < dataToSort[j].price.AllAverage
 			}
-			return dataToSort[i].price.All_Average > dataToSort[j].price.All_Average
+			return dataToSort[i].price.AllAverage > dataToSort[j].price.AllAverage
 		} else if column == ColumnAllCount {
 			if data.sortAsc {
-				return dataToSort[i].price.All_Cnt < dataToSort[j].price.All_Cnt
+				return dataToSort[i].price.AllCnt < dataToSort[j].price.AllCnt
 			}
-			return dataToSort[i].price.All_Cnt > dataToSort[j].price.All_Cnt
+			return dataToSort[i].price.AllCnt > dataToSort[j].price.AllCnt
 		} else if column == ColumnAllMin {
 			if data.sortAsc {
-				return dataToSort[i].price.All_Min < dataToSort[j].price.All_Min
+				return dataToSort[i].price.AllMin < dataToSort[j].price.AllMin
 			}
-			return dataToSort[i].price.All_Min > dataToSort[j].price.All_Min
+			return dataToSort[i].price.AllMin > dataToSort[j].price.AllMin
 		} else if column == ColumnAllMax {
 			if data.sortAsc {
-				return dataToSort[i].price.All_Max < dataToSort[j].price.All_Max
+				return dataToSort[i].price.AllMax < dataToSort[j].price.AllMax
 			}
-			return dataToSort[i].price.All_Max > dataToSort[j].price.All_Max
+			return dataToSort[i].price.AllMax > dataToSort[j].price.AllMax
 		} else if column == ColumnLowerCount {
 			if data.sortAsc {
-				return dataToSort[i].price.LowerSection_Cnt < dataToSort[j].price.LowerSection_Cnt
+				return dataToSort[i].price.LowersectionCnt < dataToSort[j].price.LowersectionCnt
 			}
-			return dataToSort[i].price.LowerSection_Min > dataToSort[j].price.LowerSection_Min
+			return dataToSort[i].price.LowersectionMin > dataToSort[j].price.LowersectionMin
 		} else if column == ColumnLowerMin {
 			if data.sortAsc {
-				return dataToSort[i].price.LowerSection_Min < dataToSort[j].price.LowerSection_Min
+				return dataToSort[i].price.LowersectionMin < dataToSort[j].price.LowersectionMin
 			}
-			return dataToSort[i].price.LowerSection_Max > dataToSort[j].price.LowerSection_Max
+			return dataToSort[i].price.LowersectionMax > dataToSort[j].price.LowersectionMax
 		} else if column == ColumnLowerMax {
 			if data.sortAsc {
-				return dataToSort[i].price.LowerSection_Max < dataToSort[j].price.LowerSection_Max
+				return dataToSort[i].price.LowersectionMax < dataToSort[j].price.LowersectionMax
 			}
-			return dataToSort[i].price.LowerSection_Max > dataToSort[j].price.LowerSection_Max
+			return dataToSort[i].price.LowersectionMax > dataToSort[j].price.LowersectionMax
 		} else if column == ColumnLowerAverage {
 			if data.sortAsc {
-				return dataToSort[i].price.LowerSection_Average < dataToSort[j].price.LowerSection_Average
+				return dataToSort[i].price.LowersectionAverage < dataToSort[j].price.LowersectionAverage
 			}
-			return dataToSort[i].price.LowerSection_Average > dataToSort[j].price.LowerSection_Average
+			return dataToSort[i].price.LowersectionAverage > dataToSort[j].price.LowersectionAverage
 		}
 		return false
 	})
@@ -175,7 +175,7 @@ func (d *TableData) GetCell(row, column int) *tview.TableCell {
 			value = "All Cnt"
 			align = tview.AlignCenter
 		} else {
-			value = strconv.Itoa(d.data[row-1].price.All_Cnt)
+			value = strconv.Itoa(d.data[row-1].price.AllCnt)
 		}
 		break
 	case ColumnAllMin:
@@ -183,7 +183,7 @@ func (d *TableData) GetCell(row, column int) *tview.TableCell {
 			value = "All Min"
 			align = tview.AlignCenter
 		} else {
-			value = strconv.Itoa(d.data[row-1].price.All_Min)
+			value = strconv.Itoa(d.data[row-1].price.AllMin)
 		}
 		break
 	case ColumnAllMax:
@@ -191,7 +191,7 @@ func (d *TableData) GetCell(row, column int) *tview.TableCell {
 			value = "All Max"
 			align = tview.AlignCenter
 		} else {
-			value = strconv.Itoa(d.data[row-1].price.All_Max)
+			value = strconv.Itoa(d.data[row-1].price.AllMax)
 		}
 		break
 	case ColumnAllAverage:
@@ -199,7 +199,7 @@ func (d *TableData) GetCell(row, column int) *tview.TableCell {
 			value = "All Avg"
 			align = tview.AlignCenter
 		} else {
-			value = strconv.Itoa(d.data[row-1].price.All_Average)
+			value = strconv.Itoa(d.data[row-1].price.AllAverage)
 		}
 		break
 	case ColumnLowerCount:
@@ -207,7 +207,7 @@ func (d *TableData) GetCell(row, column int) *tview.TableCell {
 			value = "Lower Cnt"
 			align = tview.AlignCenter
 		} else {
-			value = strconv.Itoa(d.data[row-1].price.LowerSection_Cnt)
+			value = strconv.Itoa(d.data[row-1].price.LowersectionCnt)
 		}
 		break
 	case ColumnLowerMin:
@@ -215,7 +215,7 @@ func (d *TableData) GetCell(row, column int) *tview.TableCell {
 			value = "Lower Min"
 			align = tview.AlignCenter
 		} else {
-			value = strconv.Itoa(d.data[row-1].price.LowerSection_Min)
+			value = strconv.Itoa(d.data[row-1].price.LowersectionMin)
 		}
 		break
 	case ColumnLowerMax:
@@ -223,7 +223,7 @@ func (d *TableData) GetCell(row, column int) *tview.TableCell {
 			value = "Lower Max"
 			align = tview.AlignCenter
 		} else {
-			value = strconv.Itoa(d.data[row-1].price.LowerSection_Max)
+			value = strconv.Itoa(d.data[row-1].price.LowersectionMax)
 		}
 		break
 	case ColumnLowerAverage:
@@ -231,8 +231,8 @@ func (d *TableData) GetCell(row, column int) *tview.TableCell {
 			value = "Lower Avg"
 			align = tview.AlignCenter
 		} else {
-			value = strconv.Itoa(d.data[row-1].price.LowerSection_Average)
-			if d.data[row-1].price.LowerSection_Average < d.config.Setup.LowerSectionAverageHighlightThreshold {
+			value = strconv.Itoa(d.data[row-1].price.LowersectionAverage)
+			if d.data[row-1].price.LowersectionAverage < d.config.Setup.LowerSectionAverageHighlightThreshold {
 				cellColor = tcell.ColorRed
 			}
 		}
