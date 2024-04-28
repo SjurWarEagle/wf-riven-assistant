@@ -3,10 +3,19 @@
 ## Purpose
 
 ## Security
-### Virus
-I'm aware that there are rare cases of findings of `Trojan.Malware.300983.susgen` or `TrojanDownloader.Agent.gfcf` as visible in this report: [VirusTotal](https://www.virustotal.com/gui/file/a13603fed439b2122aa58f87f0c0e29c22f88758596aaa05c49ace63cd9facce?nocache=1)
+
+### Virus?
+
+I'm aware that there are rare cases of findings of `Trojan.Malware.300983.susgen` or `TrojanDownloader.Agent.gfcf` as
+visible in this
+report: [VirusTotal](https://www.virustotal.com/gui/file/a13603fed439b2122aa58f87f0c0e29c22f88758596aaa05c49ace63cd9facce?nocache=1)
 
 This is a false positive, a detection that is incorrect: [FAQ](https://go.dev/doc/faq#virus)
+
+### Privacy
+
+This tool does not require any accounts, also it does not read any local files aside from it's configuration
+file `config.json`. It only communicates with warframe-market[1] no data is sent to anyone else.
 
 ## Confirmation
 
