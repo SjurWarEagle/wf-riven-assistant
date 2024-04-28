@@ -130,7 +130,7 @@ func (wfm WfMarket) requestAuctionPrice(itemName string, config Configuration) (
 	}
 
 	var auctionResponse AuctionsResponse
-	err2 := json.Unmarshal([]byte(string(responseData)), &auctionResponse)
+	err2 := json.Unmarshal(responseData, &auctionResponse)
 	if err2 != nil {
 		fmt.Println(string(responseData))
 		log.Fatal(err2)
@@ -252,7 +252,7 @@ func (wfm WfMarket) fillKnownItems() []Item {
 
 	responseData, err := io.ReadAll(response.Body)
 	itemResponse := ItemResponse{}
-	err2 := json.Unmarshal([]byte(string(responseData)), &itemResponse)
+	err2 := json.Unmarshal(responseData, &itemResponse)
 	if err2 != nil {
 		log.Fatal(err2)
 
