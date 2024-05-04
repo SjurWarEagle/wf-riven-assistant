@@ -41,10 +41,27 @@ type AuctionsResponse struct {
 		Auction []Auction `json:"auctions"`
 	} `json:"payload"`
 }
+type OrdersResponse struct {
+	Payload struct {
+		Orders []Order `json:"orders"`
+	} `json:"payload"`
+}
+type OfferResponse struct {
+	Payload struct {
+		Offers []Offer `json:"sell_orders"`
+	} `json:"payload"`
+}
 type ItemResponse struct {
 	Payload struct {
 		Item []Item `json:"items"`
 	} `json:"payload"`
+}
+
+type PersonalOffer struct {
+	ItemName       string
+	UserPrice      int
+	MarketMinPrice int
+	Delta          int
 }
 
 type Auction struct {
@@ -95,6 +112,34 @@ type Item struct {
 	Id       string `json:"id"`
 	UrlName  string `json:"url_name"`
 	ItemName string `json:"item_name"`
+}
+
+type Order struct {
+	Platinum  int    `json:"platinum"`
+	OrderType string `json:"order_type"`
+	Quantity  int    `json:"quantity"`
+	Id        string `json:"id"`
+	Visible   bool   `json:"visible"`
+	User      struct {
+		Status string `json:"status"`
+	} `json:"user"`
+}
+
+type Offer struct {
+	Id        string `json:"id"`
+	Platinum  int    `json:"platinum"`
+	Quantity  int    `json:"quantity"`
+	Visible   bool   `json:"visible"`
+	OrderType string `json:"order_type"`
+	Item      struct {
+		UrlName string `json:"url_name"`
+		En      struct {
+			ItemName string `json:"item_name"`
+		} `json:"en"`
+		De struct {
+			ItemName string `json:"item_name"`
+		} `json:"de"`
+	} `json:"item"`
 }
 
 func (wfm WfMarket) requestAuctionPrice(itemName string, config Configuration) (RivenPrices, error) {

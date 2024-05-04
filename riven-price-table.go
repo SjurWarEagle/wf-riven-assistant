@@ -20,12 +20,39 @@ var ColumnLowerMin = 6
 var ColumnLowerMax = 7
 var ColumnLowerAverage = 8
 
-func CreateAndShowTable(config Configuration) {
+func convertPersonalOfferToStructForTable(offers []PersonalOffer) []struct {
+	ItemName       string
+	UserPrice      int
+	MarketMinPrice int
+	Delta          int
+} {
+	result := make([]struct {
+		ItemName       string
+		UserPrice      int
+		MarketMinPrice int
+		Delta          int
+	}, len(offers))
+	for i, offer := range offers {
+		result[i] = struct {
+			ItemName       string
+			UserPrice      int
+			MarketMinPrice int
+			Delta          int
+		}{
+			ItemName:       offer.ItemName,
+			UserPrice:      offer.UserPrice,
+			MarketMinPrice: offer.MarketMinPrice,
+			Delta:          offer.Delta,
+		}
+	}
+	return result
+}
+
+func createRivenTable(config Configuration, market *WfMarket) *tview.Table {
 	var resultData []struct {
 		name  string
 		price RivenPrices
 	}
-	market := NewWfMarket()
 
 	processing := 0
 	for idx := range config.Rivens {
@@ -45,7 +72,7 @@ func CreateAndShowTable(config Configuration) {
 		}{name: weaponName, price: price}
 		resultData = append(resultData, singleData)
 	}
-	data := &TableData{
+	data := &RivenTableData{
 		config:       config,
 		data:         resultData,
 		sortAsc:      true,
@@ -73,15 +100,10 @@ func CreateAndShowTable(config Configuration) {
 				os.Exit(0)
 			}
 		})
-	if err := tview.NewApplication().
-		SetRoot(table, true).
-		EnableMouse(true).
-		Run(); err != nil {
-		panic(err)
-	}
+	return table
 }
 
-func SortData(row int, column int, data *TableData) {
+func SortData(row int, column int, data *RivenTableData) {
 	if row != 0 {
 		return
 	}
@@ -146,16 +168,16 @@ func SortData(row int, column int, data *TableData) {
 	data.data = dataToSort
 }
 
-func (d *TableData) GetRowCount() int {
+func (d *RivenTableData) GetRowCount() int {
 	//+1 due to header
 	return len(d.data) + 1
 }
 
-func (d *TableData) GetColumnCount() int {
+func (d *RivenTableData) GetColumnCount() int {
 	return 9
 }
 
-func (d *TableData) GetCell(row, column int) *tview.TableCell {
+func (d *RivenTableData) GetCell(row, column int) *tview.TableCell {
 	value := ""
 	align := tview.AlignRight
 	cellColor := tcell.ColorWhite
@@ -163,7 +185,7 @@ func (d *TableData) GetCell(row, column int) *tview.TableCell {
 	switch column {
 	case ColumnWeaponName:
 		if row == 0 {
-			value = "Weapon Name"
+			value = "    Weapon Name    "
 			align = tview.AlignCenter
 		} else {
 			value = d.data[row-1].name
@@ -247,7 +269,7 @@ func (d *TableData) GetCell(row, column int) *tview.TableCell {
 	return tview.NewTableCell(fmt.Sprintf("%s", value)).SetTextColor(cellColor).SetAlign(align)
 }
 
-type TableData struct {
+type RivenTableData struct {
 	config Configuration
 	tview.TableContentReadOnly
 	sortedColumn int

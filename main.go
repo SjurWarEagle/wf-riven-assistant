@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/rivo/tview"
 	"os"
 )
 
@@ -10,8 +11,24 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	market := NewWfMarket()
+	//errRiven := createRivenTable(config, market)
+	//if errRiven != nil {
+	//	panic(errRiven)
+	//}
 
-	CreateAndShowTable(config)
+	offersTable, errOffers := CreateOffersTable(config, market)
+	if errOffers != nil {
+		panic(errOffers)
+	}
+
+	if err := tview.NewApplication().
+		SetRoot(offersTable, true).
+		EnableMouse(true).
+		Run(); err != nil {
+		panic(err)
+	}
+
 }
 
 func readConfig() (Configuration, error) {
