@@ -18,10 +18,7 @@ type WfMarket struct {
 func NewWfMarket() *WfMarket {
 	rc := WfMarket{}
 
-	//rc.items = rc.fillKnownItems()
-
 	return &rc
-
 }
 
 type RivenPrices struct {
@@ -107,6 +104,7 @@ type Auction struct {
 	Id                string      `json:"id"`
 	Private           bool        `json:"private"`
 }
+
 type Item struct {
 	Thumb    string `json:"thumb"`
 	Id       string `json:"id"`

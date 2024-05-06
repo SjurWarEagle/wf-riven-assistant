@@ -20,35 +20,7 @@ var ColumnLowerMin = 6
 var ColumnLowerMax = 7
 var ColumnLowerAverage = 8
 
-func convertPersonalOfferToStructForTable(offers []PersonalOffer) []struct {
-	ItemName       string
-	UserPrice      int
-	MarketMinPrice int
-	Delta          int
-} {
-	result := make([]struct {
-		ItemName       string
-		UserPrice      int
-		MarketMinPrice int
-		Delta          int
-	}, len(offers))
-	for i, offer := range offers {
-		result[i] = struct {
-			ItemName       string
-			UserPrice      int
-			MarketMinPrice int
-			Delta          int
-		}{
-			ItemName:       offer.ItemName,
-			UserPrice:      offer.UserPrice,
-			MarketMinPrice: offer.MarketMinPrice,
-			Delta:          offer.Delta,
-		}
-	}
-	return result
-}
-
-func createRivenTable(config Configuration, market *WfMarket) *tview.Table {
+func createRivenTable(config Configuration, market *WfMarket) (*tview.Table, error) {
 	var resultData []struct {
 		name  string
 		price RivenPrices
@@ -63,7 +35,7 @@ func createRivenTable(config Configuration, market *WfMarket) *tview.Table {
 		price, err := market.requestAuctionPrice(weaponName, config)
 		log.Printf("...done\n")
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 
 		singleData := struct {
@@ -100,7 +72,7 @@ func createRivenTable(config Configuration, market *WfMarket) *tview.Table {
 				os.Exit(0)
 			}
 		})
-	return table
+	return table, nil
 }
 
 func SortData(row int, column int, data *RivenTableData) {
